@@ -11,7 +11,6 @@ def converToIngredientShort(ingredient):
 
 class Ingredients(Resource):
     def get(self):
-        print(request.args)
         try:
             rawStatement = f"SELECT * FROM ZUTAT "
             result = db.engine.execute(rawStatement)
