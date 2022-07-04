@@ -11,9 +11,12 @@ db = SQLAlchemy(app)
 
 if __name__ == "__main__":
     from ingredients import Ingredients
-    from recipes import Recipes
+    from recipes import Recipes, FullRecipe
     from categories import Category
+    from restrictions import Restriction
     api.add_resource(Ingredients, "/ingredients")
     api.add_resource(Recipes, "/recipes")
+    api.add_resource(FullRecipe, "/fullRecipeById")
     api.add_resource(Category, "/categories")
+    api.add_resource(Restriction, "/restrictions")
     app.run(debug=True)
