@@ -33,6 +33,10 @@ def convertIngredients(row):
         "protein": float(row[8]),
         "amount": amount
     }
+def convertRestrictions(row):
+    return {
+
+    }
 
 
 def setGetStatement(args):
@@ -119,6 +123,25 @@ class FullRecipe(Resource):
                                         JOIN ZutatenDerRezepte zdr ON zdr.ZUTATENNR = z.ZUTATENNR
                                         WHERE zdr.RezeptID = {recipeId}""" )
             data['ingredients'] = [convertIngredients(row) for row in res2]
+
+            res3 = db.engine.execute(f"""SELECT b.*
+                                        FROM Beschränkungen b
+                                        JOIN RezeptBeschränkungen rb ON rb.BeschID = b.BeschId
+                                        WHERE rb.RezeptID = {recipeId}""" )
+            restrictions = []
+            for r in res3:
+                restrictions.append(r[1])
+            data['restrictions'] = restrictions
+           
+            res4 = db.engine.execute(f"""SELECT k.*
+                                        FROM Ernährungskategorien k
+                                        JOIN RezeptKategorien rk ON rk.EkID = k.EkID
+                                        WHERE rk.RezeptID = {recipeId}""" )
+            categories= []
+            for r in res4:
+                categories.append(r[1])
+            data['categories'] = categories
+
             return data
 
         except Exception as e:
